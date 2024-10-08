@@ -6,10 +6,10 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/pi-prakhar/go-gcp-auth/internal/constants"
-	"github.com/pi-prakhar/go-gcp-auth/internal/models"
-	"github.com/pi-prakhar/go-gcp-auth/internal/services"
-	"github.com/pi-prakhar/go-gcp-auth/pkg/utils"
+	"github.com/pi-prakhar/go-gcp-pi-app/internal/auth/constants"
+	"github.com/pi-prakhar/go-gcp-pi-app/internal/auth/models"
+	"github.com/pi-prakhar/go-gcp-pi-app/internal/auth/services"
+	"github.com/pi-prakhar/go-gcp-pi-app/pkg/utils"
 )
 
 type AuthHandler struct {

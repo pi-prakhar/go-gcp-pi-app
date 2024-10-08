@@ -5,9 +5,10 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/pi-prakhar/go-gcp-auth/internal/constants"
-	"github.com/pi-prakhar/go-gcp-auth/internal/models"
+
 	"github.com/pi-prakhar/go-gcp-auth/pkg/utils"
+	"github.com/pi-prakhar/go-gcp-pi-app/internal/auth/constants"
+	"github.com/pi-prakhar/go-gcp-pi-app/internal/auth/models"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 )

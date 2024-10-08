@@ -3,8 +3,8 @@ package router
 import (
 	"net/http"
 
-	"github.com/pi-prakhar/go-gcp-auth/internal/handlers"
-	"github.com/pi-prakhar/go-gcp-auth/internal/middleware"
+	"github.com/pi-prakhar/go-gcp-pi-app/internal/auth/handlers"
+	"github.com/pi-prakhar/go-gcp-pi-app/internal/auth/middleware"
 )
 
 type Router struct {

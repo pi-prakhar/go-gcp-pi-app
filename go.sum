@@ -4,5 +4,7 @@ github.com/golang-jwt/jwt/v5 v5.2.1 h1:OuVbFODueb089Lh128TAcimifWaLhJwVflnrgM17w
 github.com/golang-jwt/jwt/v5 v5.2.1/go.mod h1:pqrtFR0X4osieyHYxtmOUWsAWrfe1Q5UVIyoH402zdk=
 github.com/google/go-cmp v0.5.9 h1:O2Tfq5qg4qc4AmwVlvv0oLiVAGB7enBSJ2x2DqQFi38=
 github.com/google/go-cmp v0.5.9/go.mod h1:17dUlkBOakJ0+DkrSSNjCkIjxS6bF9zb3elmeNGIjoY=
+github.com/pi-prakhar/go-gcp-auth v0.0.0-20241005170138-90cb0ecef115 h1:R0OYTfdr7MtbEGU6UMcT/C5TEY4SGPynamgmSCIFbrc=
+github.com/pi-prakhar/go-gcp-auth v0.0.0-20241005170138-90cb0ecef115/go.mod h1:85768w7wBLA8BBgNKZYFsz3Rnh+mSGzthldBzugHERg=
 golang.org/x/oauth2 v0.23.0 h1:PbgcYx2W7i4LvjJWEbf0ngHV6qJYr86PkAV3bXdLEbs=
 golang.org/x/oauth2 v0.23.0/go.mod h1:XYTD2NtWslqkgxebSiOHnXEap4TF09sJSc7H1sXbhtI=

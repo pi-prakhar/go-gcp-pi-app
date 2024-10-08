@@ -5,9 +5,9 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/pi-prakhar/go-gcp-auth/internal/handlers"
-	"github.com/pi-prakhar/go-gcp-auth/internal/router"
-	"github.com/pi-prakhar/go-gcp-auth/internal/services"
+	"github.com/pi-prakhar/go-gcp-pi-app/internal/auth/handlers"
+	"github.com/pi-prakhar/go-gcp-pi-app/internal/auth/router"
+	"github.com/pi-prakhar/go-gcp-pi-app/internal/auth/services"
 )
 
 func main() {

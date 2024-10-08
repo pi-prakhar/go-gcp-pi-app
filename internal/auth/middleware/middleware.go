@@ -4,9 +4,9 @@ import (
 	"net/http"
 
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/pi-prakhar/go-gcp-auth/internal/constants"
-	"github.com/pi-prakhar/go-gcp-auth/internal/models"
-	"github.com/pi-prakhar/go-gcp-auth/pkg/utils"
+	"github.com/pi-prakhar/go-gcp-pi-app/internal/auth/constants"
+	"github.com/pi-prakhar/go-gcp-pi-app/internal/auth/models"
+	"github.com/pi-prakhar/go-gcp-pi-app/pkg/utils"
 )
 
 type AuthMiddleware struct{}
