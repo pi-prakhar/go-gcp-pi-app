@@ -1,0 +1,35 @@
+services:
+  server:
+    container_name: server
+    build:
+      context: ../
+      dockerfile: ./deployments/docker/server.Dockerfile
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config 
+    networks:
+      - auth-network
+
+  auth:
+    container_name: auth
+    build: 
+    environment:
+      - GOOGLE_OAUTH_CLIENT_ID=${GOOGLE_OAUTH_CLIENT_ID}
+      - GOOGLE_OAUTH_CLIENT_SECRET=${GOOGLE_OAUTH_CLIENT_SECRET}
+      - AUTH_SERVICE_PORT=${AUTH_SERVICE_PORT}
+      - AUTH_JWT_KEY=${AUTH_JWT_KEY}
+      - AUTH_SERVICE_HOST=${AUTH_SERVICE_HOST}
+    networks:
+      - auth-network
+
+volumes:
+  caddy_data:
+  caddy_config:
+
+
+networks:
+  auth-network:
+    driver: bridge
