@@ -1,3 +1,6 @@
 package repository
 
-type UserRepository struct{}
+type UserRepository interface{}
+
+type GCPPostgresqlRepository struct {
+}

@@ -6,7 +6,7 @@ import (
 )
 
 type UserHandler struct {
-	services *services.UserService
+	Service *services.UserService
 }
 
 func (h *UserHandler) CreateUser(c *gin.Context) {}
