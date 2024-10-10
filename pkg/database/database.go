@@ -51,6 +51,10 @@ func (d *Database) Close() {
 	d.strategy.Close()
 }
 
+func (d *Database) GetDBConnectionPool() *sql.DB {
+	return d.db
+}
+
 // func getStrategy(dbType string) (DBStrategy, error) {
 // 	switch dbType {
 // 	// case "mysql":

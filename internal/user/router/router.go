@@ -24,7 +24,7 @@ func (r *Router) initRoutes() {
 
 	api := r.Engine.Group("/api/v1/users")
 	{
-		api.GET("/get/:mail", r.handler.GetUser)
-		api.GET("/create", r.handler.CreateUser)
+		api.GET("/get/:mail", r.handler.GetUserByEmail)
+		api.POST("/create", r.handler.CreateUser)
 	}
 }

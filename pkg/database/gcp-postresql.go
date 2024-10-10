@@ -46,6 +46,7 @@ func (s *GCPPostgresStrategy) Connect(config Config) (*sql.DB, error) {
 	// }
 	connConfig, err := pgx.ParseConfig(dsn)
 	if err != nil {
+		fmt.Println("could not get conn config : ", connConfig)
 		return nil, err
 	}
 	var opts []cloudsqlconn.Option
@@ -54,6 +55,7 @@ func (s *GCPPostgresStrategy) Connect(config Config) (*sql.DB, error) {
 	}
 	d, err := cloudsqlconn.NewDialer(context.Background(), opts...)
 	if err != nil {
+		fmt.Println("new dialer : ", err)
 		return nil, err
 	}
 	// Use the Cloud SQL connector to handle connecting to the instance.
