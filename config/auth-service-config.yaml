@@ -1,0 +1,14 @@
+service:
+  mode: debug
+  port: 8081
+  readTimeout: 10
+  writeTimeout: 10
+
+auth:
+  serviceHost: ${AUTH_SERVICE_HOST}
+  google: 
+    clientID: ${GOOGLE_OAUTH_CLIENT_ID}
+    clientSecret: ${GOOGLE_OAUTH_CLIENT_SECRET}
+  jwt:
+    key: ${AUTH_JWT_KEY}
+

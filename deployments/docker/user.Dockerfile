@@ -6,7 +6,8 @@ COPY cmd ./cmd
 COPY config ./config
 COPY internal ./internal
 COPY pkg ./pkg
-
+COPY secrets ./secrets
+ 
 RUN go mod download
 
 ENV GOOS=linux
@@ -18,4 +19,7 @@ WORKDIR /app
 USER 1000:1000
 COPY --from=builder --chown=1000:1000  /app/main /app/main
 COPY --from=builder --chown=1000:1000  /app/config /app/config
+COPY --from=builder --chown=1000:1000  /app/secrets /app/secrets
+ENV CONFIG_FILE_PATH=./config/user-service-config.yaml
+ENV GOOGLE_APPLICATION_CREDENTIALS="./secrets/poetic-orb-430304-r9-f97ac87421d0.json"
 CMD [ "./main" ]

@@ -1,19 +1,19 @@
+service:
+  mode: debug
+  port: :8081
+
 database:
   type: postgres
-  host: ""
   port: 5432
   user: ${GOOGLE_CLOUD_POSTGRESQL_DB_USER}
   password: ${GOOGLE_CLOUD_POSTGRESQL_DB_PASSWORD}
-  max_conns: 10
-  max_idle_conns :
-  max_life_time :
-  sslmode : "false"
-
+  maxConns: 10
+  sslmode : false
 
 gcp:
-  project_id: ${GOOGLE_PROJECT_ID}
+  projectID: ${GOOGLE_PROJECT_ID}
   region: ${GOOGLE_REGION}
-  instance_name: ${GOOGLE_CLOUD_POSTGRESQL_DB_INSTANCE_NAME}
-  use_i_a_m_auth: true
-  credentials_file: ${GCP_CREDS_FILE}
-  use_private_i_p: false
+  instanceName: ${GOOGLE_CLOUD_POSTGRESQL_DB_INSTANCE_NAME}
+  useIAMAuth: true
+  credentialsFile: ${GCP_CREDS_FILE}
+  usePrivateIP: false
