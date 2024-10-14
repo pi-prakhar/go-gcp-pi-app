@@ -34,7 +34,6 @@ func NewConfigLoader[T any](configPath string, configType string, hasSecrets boo
 	}
 
 	content := os.ExpandEnv(string(file))
-
 	if err := v.ReadConfig(strings.NewReader(content)); err != nil {
 		return nil, err
 	}
@@ -48,7 +47,6 @@ func (l *ConfigLoader[T]) Load() (T, error) {
 	if err := l.viper.Unmarshal(&config); err != nil {
 		return config, err
 	}
-
 	if l.hasSecrets {
 		if err := l.ReadSecrets(&config); err != nil {
 			return config, err

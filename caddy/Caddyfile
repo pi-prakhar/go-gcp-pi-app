@@ -19,9 +19,19 @@
     encode zstd gzip
     import security
 
-    reverse_proxy auth:8081
-}
+    handle /api/v1/users/* {
+        reverse_proxy user:8081
+    }
 
+    handle /api/v1/auth/* {
+        reverse_proxy auth:8081
+    }
+
+    # Optional: catch-all for unmatched routes
+    handle {
+        respond "Not Found" 404
+    }
+}
 
 #localhost:443 {
 #    tls internal  # Caddy will issue a self-signed certificate for localhost

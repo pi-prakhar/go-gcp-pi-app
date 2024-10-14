@@ -1,4 +1,4 @@
 env/.env.local
-env/.env.production
+env/.env.local.docker
 env/.env.debug
 secrets

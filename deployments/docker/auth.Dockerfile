@@ -14,7 +14,10 @@ ENV CGO_ENABLED=0
 RUN go build -o main ./cmd/auth-service
 
 FROM gcr.io/distroless/base
+# FROM debian:bullseye-slim
+
 WORKDIR /app
 USER 1000:1000
 COPY --from=builder --chown=1000:1000  /app/main /app/main
+COPY --from=builder --chown=1000:1000  /app/config /app/config
 CMD [ "./main" ]

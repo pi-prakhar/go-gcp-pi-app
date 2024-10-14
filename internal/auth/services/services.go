@@ -7,6 +7,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 
 	"github.com/pi-prakhar/go-gcp-auth/pkg/utils"
+	"github.com/pi-prakhar/go-gcp-pi-app/internal/auth/config"
 	"github.com/pi-prakhar/go-gcp-pi-app/internal/auth/constants"
 	"github.com/pi-prakhar/go-gcp-pi-app/internal/auth/models"
 	"golang.org/x/oauth2"
@@ -17,19 +18,23 @@ var (
 	oauth2Config *oauth2.Config
 )
 
-type GoogleAuthService struct{}
+type GoogleAuthService struct {
+	config *config.Config
+}
 
-func NewGoogleAuthService() *GoogleAuthService {
-	googleAuthService := &GoogleAuthService{}
-	googleAuthService.initConfig()
+func NewGoogleAuthService(config *config.Config) *GoogleAuthService {
+	googleAuthService := &GoogleAuthService{
+		config: config,
+	}
+	googleAuthService.initConfig(config)
 	return googleAuthService
 }
 
-func (g *GoogleAuthService) initConfig() {
+func (g *GoogleAuthService) initConfig(config *config.Config) {
 	oauth2Config = &oauth2.Config{
-		ClientID:     utils.GetClientId(),
-		ClientSecret: utils.GetClientSecret(),
-		RedirectURL:  utils.GetCallbackURL(),
+		ClientID:     config.Auth.Google.ClientId,
+		ClientSecret: config.Auth.Google.ClientSecret,
+		RedirectURL:  config.Auth.ServiceHost + constants.GOOGLE_OAUTH_CALLBACK_URL,
 		Scopes: []string{
 			constants.GOOGLE_AUTH_SCOPE_EMAIL,
 			constants.GOOGLE_AUTH_SCOPE_PROFILE,

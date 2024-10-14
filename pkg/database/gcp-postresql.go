@@ -40,10 +40,6 @@ func (s *GCPPostgresStrategy) Connect(config Config) (*sql.DB, error) {
 	dsn := s.BuildDSN(config)
 	instanceConnectionName := s.BuildInstanceName()
 
-	// db, err := sql.Open("postgres", dsn)
-	// if err != nil {
-	// 	return nil, fmt.Errorf("failed to open database: %w", err)
-	// }
 	connConfig, err := pgx.ParseConfig(dsn)
 	if err != nil {
 		fmt.Println("could not get conn config : ", connConfig)
@@ -68,11 +64,6 @@ func (s *GCPPostgresStrategy) Connect(config Config) (*sql.DB, error) {
 	if err != nil {
 		return nil, fmt.Errorf("sql.Open: %w", err)
 	}
-	return db, nil
-
-	// Configure connection pool
-	db.SetMaxIdleConns(config.MaxIdleConns)
-	db.SetConnMaxLifetime(config.MaxLifetime)
 
 	// Verify connection
 	if err := s.Ping(ctx, db); err != nil {

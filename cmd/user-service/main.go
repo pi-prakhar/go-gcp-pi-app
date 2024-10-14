@@ -15,21 +15,23 @@ import (
 
 func main() {
 
+	// time.Sleep(30 * time.Minute)
+
 	var config Config
 	var err error
 	var loader utils.Loader[Config]
 
 	// err = godotenv.Load("../../env/.env.local")
 	// if err != nil {
-	// 	fmt.Println("Error : loading .env file:", err)
+	// 	log.Fatalf("Error loading .env file")
 	// }
 
-	configFilePath := os.Getenv(constants.CONFIG_FILE_PATH)
+	configFilePath := os.Getenv(constants.USER_CONFIG_FILE_PATH)
 	if configFilePath == "" {
 		log.Fatalf("Error : Failed to find Config file in path in env")
 	}
 
-	loader, err = utils.NewConfigLoader[Config](configFilePath, constants.CONFIG_FILE_TYPE, true)
+	loader, err = utils.NewConfigLoader[Config](configFilePath, constants.USER_CONFIG_FILE_TYPE, true)
 	if err != nil {
 		log.Fatalf("Error : Failed to create config loader : %s", err.Error())
 	}
