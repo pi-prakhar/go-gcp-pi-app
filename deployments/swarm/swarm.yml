@@ -4,9 +4,6 @@ services:
   server:
     container_name: pi-app-server
     image: 16181181418/go-gcp-pi-app_server:1.0.0
-    ports:
-      - "80:80"
-      - "443:443"
     deploy:
       replicas: 1
     volumes:
