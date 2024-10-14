@@ -7,7 +7,7 @@ TAGS := 1.0.0
 BUILD_CONTEXT ?= .
 DOCKER_ACCOUNT=16181181418
 
-.PHONY: up-local up-debug up-production down restart build-images push-images logs
+.PHONY: up-local up-debug up-production down restart build-images push-images list logs
 
 # Start all services in the background
 up-local:
@@ -37,6 +37,7 @@ clean:
 # Restart all services
 restart: down up
 
+# Build images
 build-images:
 	@for service in $(SERVICES); do \
 		for tag in $(TAGS); do \
@@ -47,6 +48,7 @@ build-images:
 		done; \
 	done
 
+# Push Images to Docker Repository
 push-images:
 	@for service in $(SERVICES); do \
 		for tag in $(TAGS); do \
@@ -54,14 +56,17 @@ push-images:
 		done; \
 	done
 
-
-.PHONY: list
+# List all services and tags available for build
 list:
 	@echo "Available services:"
 	@for service in $(SERVICES); do echo "  - $$service"; done
 	@echo "\nAvailable tags:"
 	@for tag in $(TAGS); do echo "  - $$tag"; done
 
-# Show logs from all running services
+# View logs for current project
 logs:
 	docker compose -f $(COMPOSE_FILE) -p ${PROJECT_NAME} logs -f
+
+# Push all binaries and secrets to production server
+cp-to-prod:
+	scp -r ./deployments/swarm/swarm.yml ./secrets ${REMOTE}:/home/prakhar/piapp/
