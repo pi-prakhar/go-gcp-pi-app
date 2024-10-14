@@ -1,9 +1,9 @@
 COMPOSE_FILE=./deployments/docker-compose.yml
 COMPOSE_FILE_PRODUCTION=./deployments/docker-compose.production.yml
 DOCKER_FILE_PATH=./deployments/docker
-PROJECT_NAME=go-gcp-auth
+PROJECT_NAME=go-gcp-pi-app
 SERVICES := auth server user
-TAGS := latest
+TAGS := 1.0.0
 BUILD_CONTEXT ?= .
 DOCKER_ACCOUNT=16181181418
 
@@ -12,7 +12,7 @@ DOCKER_ACCOUNT=16181181418
 # Start all services in the background
 up-local:
 	@echo "Starting services with Docker Compose..."
-	docker compose -f $(COMPOSE_FILE) -p ${PROJECT_NAME} --env-file ./env/.env.local up $(FLAGS)
+	docker compose -f $(COMPOSE_FILE) -p ${PROJECT_NAME} --env-file ./env/.env.local.docker up $(FLAGS)
 
 up-debug:
 	@echo "Starting services with Docker Compose..."
@@ -20,7 +20,7 @@ up-debug:
 
 up-production:
 	@echo "Starting services with Docker Compose..."
-	docker compose -f $(COMPOSE_FILE_PRODUCTION) -p ${PROJECT_NAME} --env-file ./env/.env.local up $(FLAGS)
+	docker compose -f $(COMPOSE_FILE_PRODUCTION) -p ${PROJECT_NAME} up $(FLAGS)
 
 
 # Stop all running services
@@ -41,7 +41,7 @@ build-images:
 	@for service in $(SERVICES); do \
 		for tag in $(TAGS); do \
 			docker build \
-				-t $(DOCKER_ACCOUNT)/go-gcp-auth_$$service:$$tag \
+				-t $(DOCKER_ACCOUNT)/${PROJECT_NAME}_$$service:$$tag \
 				-f $(DOCKER_FILE_PATH)/$$service.Dockerfile \
 				$(BUILD_CONTEXT); \
 		done; \
@@ -50,7 +50,7 @@ build-images:
 push-images:
 	@for service in $(SERVICES); do \
 		for tag in $(TAGS); do \
-			docker push $(DOCKER_ACCOUNT)/go-gcp-auth_$$service:$$tag; \
+			docker push $(DOCKER_ACCOUNT)/${PROJECT_NAME}_$$service:$$tag; \
 		done; \
 	done
 
