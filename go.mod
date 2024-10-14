@@ -7,6 +7,7 @@ require (
 	github.com/gin-gonic/gin v1.10.0
 	github.com/golang-jwt/jwt/v5 v5.2.1
 	github.com/jackc/pgx/v5 v5.7.1
+	github.com/joho/godotenv v1.5.1
 	github.com/pi-prakhar/go-gcp-auth v0.0.0-20241005170138-90cb0ecef115
 	github.com/spf13/viper v1.19.0
 	golang.org/x/oauth2 v0.23.0

@@ -5,6 +5,7 @@ import (
 
 	"github.com/pi-prakhar/go-gcp-pi-app/internal/auth/handlers"
 	"github.com/pi-prakhar/go-gcp-pi-app/internal/auth/middleware"
+	"github.com/pi-prakhar/go-gcp-pi-app/internal/auth/models"
 )
 
 type Router struct {
@@ -13,14 +14,14 @@ type Router struct {
 	middleware *middleware.AuthMiddleware
 }
 
-func NewRouter(handler *handlers.AuthHandler) *Router {
+func NewRouter(handler *handlers.AuthHandler, config *models.Config) *Router {
 	mux := http.NewServeMux()
-	mw := middleware.AuthMiddleware{}
+	mw := middleware.NewAuthMiddleware(*config)
 
 	router := &Router{
 		Mux:        mux,
 		handler:    handler,
-		middleware: &mw,
+		middleware: mw,
 	}
 
 	router.initRoutes()

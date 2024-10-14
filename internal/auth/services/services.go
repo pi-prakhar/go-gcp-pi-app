@@ -6,10 +6,9 @@ import (
 
 	"github.com/golang-jwt/jwt/v5"
 
-	"github.com/pi-prakhar/go-gcp-auth/pkg/utils"
-	"github.com/pi-prakhar/go-gcp-pi-app/internal/auth/config"
 	"github.com/pi-prakhar/go-gcp-pi-app/internal/auth/constants"
 	"github.com/pi-prakhar/go-gcp-pi-app/internal/auth/models"
+	"github.com/pi-prakhar/go-gcp-pi-app/pkg/utils"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 )
@@ -19,10 +18,10 @@ var (
 )
 
 type GoogleAuthService struct {
-	config *config.Config
+	config *models.Config
 }
 
-func NewGoogleAuthService(config *config.Config) *GoogleAuthService {
+func NewGoogleAuthService(config *models.Config) *GoogleAuthService {
 	googleAuthService := &GoogleAuthService{
 		config: config,
 	}
@@ -30,7 +29,7 @@ func NewGoogleAuthService(config *config.Config) *GoogleAuthService {
 	return googleAuthService
 }
 
-func (g *GoogleAuthService) initConfig(config *config.Config) {
+func (g *GoogleAuthService) initConfig(config *models.Config) {
 	oauth2Config = &oauth2.Config{
 		ClientID:     config.Auth.Google.ClientId,
 		ClientSecret: config.Auth.Google.ClientSecret,
@@ -122,7 +121,7 @@ func (g *GoogleAuthService) generateAuthJWTToken(username string) (string, error
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
 	// Create the JWT string
-	tokenString, err := token.SignedString(utils.GetJWTKey())
+	tokenString, err := token.SignedString(utils.GetJWTKey(g.config.Auth.JWT.Key))
 	if err != nil {
 		return "", err
 	}

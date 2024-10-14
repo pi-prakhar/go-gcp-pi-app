@@ -9,7 +9,15 @@ import (
 	"github.com/pi-prakhar/go-gcp-pi-app/pkg/utils"
 )
 
-type AuthMiddleware struct{}
+type AuthMiddleware struct {
+	config *models.Config
+}
+
+func NewAuthMiddleware(config models.Config) *AuthMiddleware {
+	return &AuthMiddleware{
+		config: &config,
+	}
+}
 
 func (m *AuthMiddleware) IsAuthenticated(next func(w http.ResponseWriter, r *http.Request)) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -43,7 +51,7 @@ func (m *AuthMiddleware) IsAuthenticated(next func(w http.ResponseWriter, r *htt
 
 		// Parse the JWT token, validating the signature
 		token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
-			return utils.GetJWTKey(), nil
+			return utils.GetJWTKey(m.config.Auth.JWT.Key), nil
 		})
 
 		if err != nil {

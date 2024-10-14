@@ -3,40 +3,26 @@ package main
 import (
 	"log"
 	"net/http"
-	"os"
 
 	"github.com/pi-prakhar/go-gcp-pi-app/internal/auth/config"
-	"github.com/pi-prakhar/go-gcp-pi-app/internal/auth/constants"
 	"github.com/pi-prakhar/go-gcp-pi-app/internal/auth/handlers"
+	"github.com/pi-prakhar/go-gcp-pi-app/internal/auth/models"
 	"github.com/pi-prakhar/go-gcp-pi-app/internal/auth/router"
 	"github.com/pi-prakhar/go-gcp-pi-app/internal/auth/services"
-	"github.com/pi-prakhar/go-gcp-pi-app/pkg/utils"
 )
 
 func main() {
 	//time.Sleep(30 * time.Minute)
-	var authConfig config.Config
-	var err error
-	var loader utils.Loader[config.Config]
+	// err := godotenv.Load("../../env/.env.local")
+	// if err != nil {
+	// 	log.Fatalf("Error loading .env file")
+	// }
 
-	configFilePath := os.Getenv(constants.AUTH_CONFIG_FILE_PATH)
-	if configFilePath == "" {
-		log.Fatalf("Error : Failed to find Config file in path in env")
-	}
+	var authConfig *models.Config = config.LoadAuthConfig()
 
-	loader, err = utils.NewConfigLoader[config.Config](configFilePath, constants.AUTH_CONFIG_FILE_TYPE, true)
-	if err != nil {
-		log.Fatalf("Error : Failed to create config loader : %s", err.Error())
-	}
-
-	authConfig, err = loader.Load()
-	if err != nil {
-		log.Fatalf("Error : Failed to load config : %s", err.Error())
-	}
-
-	authService := services.NewGoogleAuthService(&config.Config{})
+	authService := services.NewGoogleAuthService(authConfig)
 	authHandler := handlers.NewAuthHandler(authService)
-	router := router.NewRouter(authHandler)
+	router := router.NewRouter(authHandler, authConfig)
 
 	srv := http.Server{
 		Addr:    authConfig.Service.Port,

@@ -1,4 +1,4 @@
-package main
+package models
 
 import "github.com/pi-prakhar/go-gcp-pi-app/pkg/database"
 

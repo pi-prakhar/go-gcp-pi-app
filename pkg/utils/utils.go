@@ -46,11 +46,7 @@ func GenerateRandomString(n int) (string, error) {
 	return base64.URLEncoding.EncodeToString(b), nil
 }
 
-func GetJWTKey() []byte {
-	authJWTKeyFile := os.Getenv("AUTH_JWT_KEY")
-	authJWTKey, err := os.ReadFile(authJWTKeyFile)
-	if err != nil {
-		log.Println("Failed to load auth jwt key : ", err.Error())
-	}
-	return authJWTKey
+func GetJWTKey(key string) []byte {
+	var jwtKey = []byte(key)
+	return jwtKey
 }
