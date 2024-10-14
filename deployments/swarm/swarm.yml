@@ -2,7 +2,8 @@ version: "3.8"
 
 services:
   server:
-    image: 16181181418/go-gcp-auth_server:latest
+    container_name: pi-app-server
+    image: 16181181418/go-gcp-pi-app_server:1.0.0
     ports:
       - "80:80"
       - "443:443"
@@ -13,33 +14,66 @@ services:
       - caddy_config:/config 
 
   auth:
-    image: 16181181418/go-gcp-auth_auth:latest
+    container_name: pi-app-auth
+    image: 16181181418/go-gcp-pi-app_auth:1.0.0
     deploy:
       replicas: 1
     secrets:
       - google_oauth_client_id
       - google_oauth_client_secret
-      - auth_service_port
       - auth_jwt_key
       - auth_service_host
     environment:
+      - AUTH_CONFIG_FILE_PATH=./config/auth-service-config.yaml
       - GOOGLE_OAUTH_CLIENT_ID=/run/secrets/google_oauth_client_id
       - GOOGLE_OAUTH_CLIENT_SECRET=/run/secrets/google_oauth_client_secret
-      - AUTH_SERVICE_PORT=/run/secrets/auth_service_port
       - AUTH_JWT_KEY=/run/secrets/auth_jwt_key
       - AUTH_SERVICE_HOST=/run/secrets/auth_service_host
+
+  user:
+    container_name: pi-app-user
+    image: 16181181418/go-gcp-pi-app_user:1.0.0
+    secrets:
+      - gcp-postgresql-service-account-key.json
+      - google_project_id
+      - google_region
+      - google_cloud_postgresql_db_instance_name
+      - google_cloud_postgresql_db_name
+      - google_cloud_postgresql_db_user
+      - google_cloud_postgesql_db_password
+    environment:
+      - USER_CONFIG_FILE_PATH=./config/user-service-config.yaml
+      - GOOGLE_APPLICATION_CREDENTIALS=/run/secrets/gcp-postgresql-service-account-key.json
+      - GOOGLE_PROJECT_ID=/run/secrets/google_project_id
+      - GOOGLE_REGION=/run/secrets/google_region
+      - GOOGLE_CLOUD_POSTGRESQL_DB_INSTANCE_NAME=/run/secrets/google_cloud_postgresql_db_instance_name
+      - GOOGLE_CLOUD_POSTGRESQL_DB_NAME=/run/secrets/google_cloud_postgresql_db_name
+      - GOOGLE_CLOUD_POSTGRESQL_DB_USER=/run/secrets/google_cloud_postgresql_db_user
+      - GOOGLE_CLOUD_POSTGRESQL_DB_PASSWORD=/run/secrets/google_cloud_postgesql_db_password
 
 secrets:
   google_oauth_client_id:
     file: ./secrets/google_oauth_client_id.txt
   google_oauth_client_secret:
     file: ./secrets/google_oauth_client_secret.txt
-  auth_service_port:
-    file: ./secrets/auth_service_port.txt
   auth_jwt_key:
     file: ./secrets/auth_jwt_key.txt
   auth_service_host:
     file: ./secrets/auth_service_host.txt
+  gcp-postgresql-service-account-key.json:
+    file: ./secrets/gcp-postgresql-service-account-key.json
+  google_project_id:
+    file: ./secrets/google_project_id.txt
+  google_region:
+    file: ./secrets/google_region.txt
+  google_cloud_postgresql_db_instance_name:
+    file: ./secrets/google_cloud_postgresql_db_instance_name.txt
+  google_cloud_postgresql_db_name:
+    file: ./secrets/google_cloud_postgresql_db_name.txt
+  google_cloud_postgresql_db_user:
+    file: ./secrets/google_cloud_postgresql_db_user.txt  
+  google_cloud_postgesql_db_password:
+    file: ./secrets/google_cloud_postgesql_db_password.txt
 
 
 volumes:
