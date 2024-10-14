@@ -1,6 +1,6 @@
 services:
   server:
-    container_name: server
+    container_name: pi-app-server
     build:
       context: ../
       dockerfile: ./deployments/docker/server.Dockerfile
@@ -14,11 +14,14 @@ services:
       - auth-network
 
   auth:
-    container_name: auth
+    container_name: pi-app-auth
     build:
       context: ../
       dockerfile: ./deployments/docker/auth.Dockerfile
+    ports:
+      - "8081:8081"
     environment:
+      - AUTH_CONFIG_FILE_PATH=${AUTH_CONFIG_FILE_PATH}
       - GOOGLE_OAUTH_CLIENT_ID=${GOOGLE_OAUTH_CLIENT_ID}
       - GOOGLE_OAUTH_CLIENT_SECRET=${GOOGLE_OAUTH_CLIENT_SECRET}
       - AUTH_JWT_KEY=${AUTH_JWT_KEY}
@@ -27,11 +30,15 @@ services:
       - auth-network
 
   user:
-    container_name: user
+    container_name: pi-app-user
     build:
       context: ../
       dockerfile: ./deployments/docker/user.Dockerfile
+    ports:
+      - "8082:8081"
     environment:
+      - USER_CONFIG_FILE_PATH=${USER_CONFIG_FILE_PATH}
+      - GOOGLE_APPLICATION_CREDENTIALS=${GOOGLE_APPLICATION_CREDENTIALS}
       - GOOGLE_PROJECT_ID=${GOOGLE_PROJECT_ID}
       - GOOGLE_REGION=${GOOGLE_REGION}
       - GOOGLE_CLOUD_POSTGRESQL_DB_INSTANCE_NAME=${GOOGLE_CLOUD_POSTGRESQL_DB_INSTANCE_NAME}

@@ -7,6 +7,7 @@ database:
   port: 5432
   user: ${GOOGLE_CLOUD_POSTGRESQL_DB_USER}
   password: ${GOOGLE_CLOUD_POSTGRESQL_DB_PASSWORD}
+  database: ${GOOGLE_CLOUD_POSTGRESQL_DB_NAME}
   maxConns: 10
   sslmode : false
 
