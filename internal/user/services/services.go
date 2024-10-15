@@ -17,12 +17,14 @@ type UserService struct {
 // 	}
 // }
 
-// Create a new Google user
 func (s *UserService) CreateUser(ctx context.Context, user models.GoogleUser) error {
 	return s.Repository.CreateUser(ctx, user)
 }
 
-// Get user by email
 func (s *UserService) GetUserByEmail(ctx context.Context, email string) (*models.GoogleUser, error) {
 	return s.Repository.GetUserByEmail(ctx, email)
+}
+
+func (s *UserService) GetUsers(ctx context.Context) ([]*models.GoogleUser, error) {
+	return s.Repository.GetUsers(ctx)
 }
