@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 
+	"github.com/joho/godotenv"
 	"github.com/pi-prakhar/go-gcp-pi-app/internal/user/config"
 	"github.com/pi-prakhar/go-gcp-pi-app/internal/user/handlers"
 	"github.com/pi-prakhar/go-gcp-pi-app/internal/user/models"
@@ -14,10 +15,10 @@ import (
 
 func main() {
 	// time.Sleep(30 * time.Minute)
-	// err := godotenv.Load("../../env/.env.local")
-	// if err != nil {
-	// 	log.Fatalf("Error loading .env file")
-	// }
+	err := godotenv.Load("../../env/.env.local")
+	if err != nil {
+		log.Fatalf("Error loading .env file")
+	}
 
 	var userConfig *models.Config = config.LoadUserConfig()
 
