@@ -3,17 +3,18 @@ package repository
 import (
 	"context"
 	"database/sql"
-	"errors"
+	"log"
 
 	"github.com/pi-prakhar/go-gcp-pi-app/internal/auth/models"
+	errors "github.com/pi-prakhar/go-gcp-pi-app/pkg/error"
 )
 
 type UserRepository interface {
 	CreateUser(ctx context.Context, user models.GoogleUser) error
 	GetUserByEmail(ctx context.Context, email string) (*models.GoogleUser, error)
 	GetUsers(ctx context.Context) ([]*models.GoogleUser, error)
-	DeleteUserByEmail(ctx context.Context, email string) ([]*models.GoogleUser, error)
-	UpdateUserByEmail(ctx context.Context, email string) ([]*models.GoogleUser, error)
+	DeleteUserByEmail(ctx context.Context, email *string) error
+	UpdateUserByEmail(ctx context.Context, user *models.GoogleUser) error
 }
 
 type GCPPostgresqlRepository struct {
@@ -41,7 +42,7 @@ func (r *GCPPostgresqlRepository) GetUserByEmail(ctx context.Context, email stri
 	var user models.GoogleUser
 	err := row.Scan(&user.ID, &user.Email, &user.VerifiedMail, &user.Name, &user.GivenName, &user.FamilyName, &user.Picture, &user.Locale)
 	if err == sql.ErrNoRows {
-		return nil, errors.New("user not found")
+		return nil, errors.ErrUserNotFound
 	} else if err != nil {
 		return nil, err
 	}
@@ -78,21 +79,42 @@ func (r *GCPPostgresqlRepository) GetUsers(ctx context.Context) ([]*models.Googl
 	return users, nil
 }
 
-func (r *GCPPostgresqlRepository) UpdateUserByEmail(ctx context.Context, user models.GoogleUser) error {
+func (r *GCPPostgresqlRepository) UpdateUserByEmail(ctx context.Context, user *models.GoogleUser) error {
 	query := `
-        UPDATE users
-		SET email=$1,
-			verified=$2,
-			name=$3,
-			given_name=$4,
-			family_name=$5,
-			picture=$6,
-			locale=$7,
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+			UPDATE users
+			SET verified_email=$2,
+			    name=$3,
+			    given_name=$4,
+			    family_name=$5,
+			    picture=$6,
+			    locale=$7
+			WHERE email = $1
 		`
-	_, err := r.DB.ExecContext(ctx, query, user.ID, user.Email, user.VerifiedMail, user.Name, user.GivenName, user.FamilyName, user.Picture, user.Locale)
+	res, err := r.DB.ExecContext(ctx, query, user.Email, user.VerifiedMail, user.Name, user.GivenName, user.FamilyName, user.Picture, user.Locale)
+	log.Println("res : ", res)
 	if err != nil {
 		return err
 	}
+	return nil
+}
+
+func (r *GCPPostgresqlRepository) DeleteUserByEmail(ctx context.Context, email *string) error {
+	query := `
+        DELETE FROM users 
+		WHERE email = $1
+		`
+	res, err := r.DB.ExecContext(ctx, query, *email)
+	log.Println("res : ", res)
+	if err != nil {
+		return nil
+	}
+
+	if rowsAffected, _ := res.RowsAffected(); rowsAffected == 0 {
+		log.Println("Row Affected : ", rowsAffected)
+		return errors.ErrUserNotFound
+	} else {
+		log.Println("Row Affected : ", rowsAffected)
+	}
+
 	return nil
 }

@@ -27,5 +27,7 @@ func (r *Router) initRoutes() {
 		api.GET("/get/:mail", r.handler.GetUserByEmail)
 		api.GET("/get", r.handler.GetUsers)
 		api.POST("/create", r.handler.CreateUser)
+		api.PUT("/update", r.handler.UpdateUser)
+		api.DELETE("/delete/:mail", r.handler.DeleteUser)
 	}
 }
