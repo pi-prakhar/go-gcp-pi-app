@@ -11,7 +11,7 @@ services:
       - caddy_data:/data
       - caddy_config:/config 
     networks:
-      - auth-network
+      - pi-app-network
 
   auth:
     container_name: pi-app-auth
@@ -27,7 +27,7 @@ services:
       - AUTH_JWT_KEY=${AUTH_JWT_KEY}
       - AUTH_SERVICE_HOST=${AUTH_SERVICE_HOST}
     networks:
-      - auth-network
+      - pi-app-network
 
   user:
     container_name: pi-app-user
@@ -46,7 +46,16 @@ services:
       - GOOGLE_CLOUD_POSTGRESQL_DB_USER=${GOOGLE_CLOUD_POSTGRESQL_DB_USER}
       - GOOGLE_CLOUD_POSTGRESQL_DB_PASSWORD=${GOOGLE_CLOUD_POSTGRESQL_DB_PASSWORD}
     networks:
-      - auth-network
+      - pi-app-network
+
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ../metrics/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - pi-app-network
 
 volumes:
   caddy_data:
@@ -54,5 +63,5 @@ volumes:
 
 
 networks:
-  auth-network:
+  pi-app-network:
     driver: bridge

@@ -3,9 +3,10 @@ package main
 import (
 	"log"
 
-	"github.com/joho/godotenv"
 	"github.com/pi-prakhar/go-gcp-pi-app/internal/user/config"
 	"github.com/pi-prakhar/go-gcp-pi-app/internal/user/handlers"
+	"github.com/pi-prakhar/go-gcp-pi-app/internal/user/metrics"
+	"github.com/pi-prakhar/go-gcp-pi-app/internal/user/middleware"
 	"github.com/pi-prakhar/go-gcp-pi-app/internal/user/models"
 	"github.com/pi-prakhar/go-gcp-pi-app/internal/user/repository"
 	"github.com/pi-prakhar/go-gcp-pi-app/internal/user/router"
@@ -15,10 +16,10 @@ import (
 
 func main() {
 	// time.Sleep(30 * time.Minute)
-	err := godotenv.Load("../../env/.env.local")
-	if err != nil {
-		log.Fatalf("Error loading .env file")
-	}
+	// err := godotenv.Load("../../env/.env.local")
+	// if err != nil {
+	// 	log.Fatalf("Error loading .env file")
+	// }
 
 	var userConfig *models.Config = config.LoadUserConfig()
 
@@ -29,10 +30,13 @@ func main() {
 	}
 	defer db.Close()
 
+	metrics.InitMetrics()
+
 	repository := repository.GCPPostgresqlRepository{DB: db.GetDBConnectionPool()}
 	userService := services.UserService{Repository: &repository}
 	userHandler := handlers.UserHandler{Service: &userService}
-	userRouter := router.NewRouter(&userHandler)
+	middleware := middleware.NewUserMiddleware()
+	userRouter := router.NewRouter(&userHandler, middleware)
 
 	err = userRouter.Engine.Run(userConfig.Service.Port)
 	if err != nil {

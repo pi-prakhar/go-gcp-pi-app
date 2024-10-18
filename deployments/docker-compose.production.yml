@@ -12,7 +12,7 @@ services:
       - caddy_data:/data
       - caddy_config:/config
     networks:
-      - auth-network
+      - pi-app-network
 
   auth:
     container_name: pi-app-auth
@@ -29,7 +29,7 @@ services:
       - AUTH_JWT_KEY=/run/secrets/auth_jwt_key
       - AUTH_SERVICE_HOST=/run/secrets/auth_service_host
     networks:
-      - auth-network
+      - pi-app-network
 
   user:
     container_name: pi-app-user
@@ -52,7 +52,7 @@ services:
       - GOOGLE_CLOUD_POSTGRESQL_DB_USER=/run/secrets/google_cloud_postgresql_db_user
       - GOOGLE_CLOUD_POSTGRESQL_DB_PASSWORD=/run/secrets/google_cloud_postgesql_db_password
     networks:
-      - auth-network
+      - pi-app-network
 
 secrets:
   google_oauth_client_id:
@@ -77,10 +77,12 @@ secrets:
     file: ../secrets/google_cloud_postgresql_db_user.txt  
   google_cloud_postgesql_db_password:
     file: ../secrets/google_cloud_postgesql_db_password.txt
+
+
 volumes:
   caddy_data:
   caddy_config:
 
 networks:
-  auth-network:
+  pi-app-network:
     driver: bridge
