@@ -56,11 +56,22 @@ services:
       - ../metrics/prometheus.yml:/etc/prometheus/prometheus.yml
     networks:
       - pi-app-network
+  
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana-data:/var/lib/grafana
+    networks:
+      - pi-app-network
 
 volumes:
   caddy_data:
   caddy_config:
-
+  grafana-data:
 
 networks:
   pi-app-network:

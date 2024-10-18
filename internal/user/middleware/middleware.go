@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -23,7 +23,7 @@ func (m *UserMiddleware) PrometheusMiddleware(c *gin.Context) {
 	statusCode := c.Writer.Status()
 
 	metrics.HttpRequestsTotal.WithLabelValues(
-		http.StatusText(statusCode), c.Request.Method, c.FullPath(),
+		strconv.Itoa(statusCode), c.Request.Method, c.FullPath(),
 	).Inc()
 
 	metrics.RequestDuration.WithLabelValues(
