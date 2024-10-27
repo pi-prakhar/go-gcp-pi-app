@@ -128,3 +128,7 @@ func (g *GoogleAuthService) generateAuthJWTToken(username string) (string, error
 
 	return tokenString, nil
 }
+
+// func (g *GoogleAuthService) CreateUserInDB(username string) (string, error) {
+
+// }

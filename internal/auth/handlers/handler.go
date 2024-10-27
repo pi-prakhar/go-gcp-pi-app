@@ -138,6 +138,7 @@ func (h *AuthHandler) HandleGoogleCallback(w http.ResponseWriter, r *http.Reques
 		res.Write(w)
 		return
 	}
+	// Create user data in users db
 
 	res = &utils.SuccessResponse[models.GoogleUser]{
 		Message:    "Successfully Fetched Google User Info",

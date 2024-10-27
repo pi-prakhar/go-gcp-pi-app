@@ -2,10 +2,12 @@ package services
 
 import (
 	"context"
+	"fmt"
 	"log"
 
 	"github.com/pi-prakhar/go-gcp-pi-app/internal/auth/models"
 	"github.com/pi-prakhar/go-gcp-pi-app/internal/user/repository"
+	errors "github.com/pi-prakhar/go-gcp-pi-app/pkg/error"
 )
 
 type UserService struct {
@@ -19,6 +21,19 @@ type UserService struct {
 // }
 
 func (s *UserService) CreateUser(ctx context.Context, user models.GoogleUser) error {
+	// check if user does not already exists in database
+	oldUser, err := s.Repository.GetUserByEmail(ctx, user.Email)
+	fmt.Println("yes1")
+	if err != errors.ErrUserNotFound && err != nil {
+		log.Println(err)
+		return err
+	}
+	fmt.Println("yes")
+	if oldUser != nil {
+
+		return &errors.UserAlreadyExistsError{Email: user.Email}
+	}
+
 	return s.Repository.CreateUser(ctx, user)
 }
 
