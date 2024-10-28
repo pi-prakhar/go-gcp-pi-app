@@ -1,6 +1,9 @@
 package services
 
 import (
+	"bytes"
+	"encoding/json"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -129,6 +132,31 @@ func (g *GoogleAuthService) generateAuthJWTToken(username string) (string, error
 	return tokenString, nil
 }
 
-// func (g *GoogleAuthService) CreateUserInDB(username string) (string, error) {
+func (g *GoogleAuthService) CreateUserInDB(user models.GoogleUser) error {
+	userDataBytes, err := json.Marshal(user)
+	if err != nil {
+		return err
+	}
 
-// }
+	req, err := http.NewRequest(http.MethodPost, "http://user:8081/api/v1/users/create", bytes.NewBuffer(userDataBytes))
+	if err != nil {
+		return err
+	}
+
+	req.Header.Set("Content-Type", "application/json")
+
+	client := &http.Client{}
+	res, err := client.Do(req)
+
+	if err != nil {
+		return err
+	}
+
+	defer res.Body.Close()
+
+	if res.StatusCode == http.StatusInternalServerError {
+		return fmt.Errorf("Failed to Create user in DB")
+	}
+
+	return nil
+}

@@ -138,10 +138,21 @@ func (h *AuthHandler) HandleGoogleCallback(w http.ResponseWriter, r *http.Reques
 		res.Write(w)
 		return
 	}
+
 	// Create user data in users db
+	err = h.services.CreateUserInDB(userInfo)
+	if err != nil {
+		res = &utils.ErrorResponse{
+			Message:    "Failed to Login user",
+			StatusCode: http.StatusInternalServerError,
+			Error:      err.Error(),
+		}
+		res.Write(w)
+		return
+	}
 
 	res = &utils.SuccessResponse[models.GoogleUser]{
-		Message:    "Successfully Fetched Google User Info",
+		Message:    "Successfully Fetched Google User Info and LoggedIn",
 		StatusCode: http.StatusOK,
 		Data:       userInfo,
 	}
