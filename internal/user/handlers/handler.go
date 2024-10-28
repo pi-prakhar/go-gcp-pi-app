@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -31,11 +30,10 @@ func (h *UserHandler) CreateUser(c *gin.Context) {
 	}
 
 	if err = h.Service.CreateUser(c.Request.Context(), request); err != nil {
-		fmt.Println(err)
-		if err == errors.ErrUserAlreadyExist {
+		if err, ok := err.(*errors.UserAlreadyExistsError); ok {
 			res = &utils.ErrorResponse{
 				Message:    "Failed to create new user",
-				StatusCode: http.StatusInternalServerError,
+				StatusCode: http.StatusBadRequest,
 				Error:      err.Error(),
 			}
 			res.Write(c.Writer)
