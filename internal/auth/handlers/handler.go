@@ -127,11 +127,11 @@ func (h *AuthHandler) HandleGoogleCallback(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	// Creating JWT Token
-	err = h.services.SetJWTToken(w, userInfo.Email)
+	// Create user data in users db
+	err = h.services.CreateUserInDB(userInfo)
 	if err != nil {
 		res = &utils.ErrorResponse{
-			Message:    "Failed to create JWT token",
+			Message:    "Failed to Login user",
 			StatusCode: http.StatusInternalServerError,
 			Error:      err.Error(),
 		}
@@ -139,11 +139,11 @@ func (h *AuthHandler) HandleGoogleCallback(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	// Create user data in users db
-	err = h.services.CreateUserInDB(userInfo)
+	// Creating JWT Token
+	err = h.services.SetJWTToken(w, userInfo.Email)
 	if err != nil {
 		res = &utils.ErrorResponse{
-			Message:    "Failed to Login user",
+			Message:    "Failed to create JWT token",
 			StatusCode: http.StatusInternalServerError,
 			Error:      err.Error(),
 		}
