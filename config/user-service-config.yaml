@@ -18,3 +18,8 @@ gcp:
   useIAMAuth: true
   credentialsFile: ${GCP_CREDS_FILE}
   usePrivateIP: false
+
+
+grpc:
+  serverPort: :50021
+  clientAuthPort: :50011

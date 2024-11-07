@@ -12,3 +12,6 @@ auth:
   jwt:
     key: ${AUTH_JWT_KEY}
 
+grpc:
+  serverPort: :50011
+  clientUserPort: :50021
