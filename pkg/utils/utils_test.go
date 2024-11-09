@@ -9,7 +9,7 @@ import (
 // Test function for GetClientId
 func TestGetClientId(t *testing.T) {
 	// Create a temp file with client ID content
-	tmpFile, err := ioutil.TempFile("", "client_id")
+	tmpFile, err := os.CreateTemp("", "client_id")
 	if err != nil {
 		t.Fatalf("Unable to create temp file: %v", err)
 	}
@@ -57,7 +57,7 @@ func TestGetClientSecret(t *testing.T) {
 
 // Test function for GetCallbackURL
 func TestGetCallbackURL(t *testing.T) {
-	tmpFile, err := ioutil.TempFile("", "auth_service_host")
+	tmpFile, err := os.CreateTemp("", "auth_service_host")
 	if err != nil {
 		t.Fatalf("Unable to create temp file: %v", err)
 	}
