@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pi-app-auth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pi-app-auth
+  template:
+    metadata:
+      labels:
+        app: pi-app-auth
+    spec:
+      containers:
+      - name: auth
+        image: 16181181418/go-gcp-pi-app_auth:1.0.0
+        env:
+        - name: AUTH_CONFIG_FILE_PATH
+          value: "./config/auth-service-config.yaml"
+        - name: GOOGLE_OAUTH_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: google-oauth-client-id
+        - name: GOOGLE_OAUTH_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: google-oauth-client-secret
+        - name: AUTH_JWT_KEY
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: auth-jwt-key
+        - name: AUTH_SERVICE_HOST
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: auth-service-host

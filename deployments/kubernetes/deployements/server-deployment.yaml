@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pi-app-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pi-app-server
+  template:
+    metadata:
+      labels:
+        app: pi-app-server
+    spec:
+      containers:
+      - name: server
+        image: 16181181418/go-gcp-pi-app_server:1.0.0
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: caddy-data
+          mountPath: /data
+        - name: caddy-config
+          mountPath: /config
+      volumes:
+      - name: caddy-data
+        persistentVolumeClaim:
+          claimName: caddy-data-pvc
+      - name: caddy-config
+        persistentVolumeClaim:
+          claimName: caddy-config-pvc

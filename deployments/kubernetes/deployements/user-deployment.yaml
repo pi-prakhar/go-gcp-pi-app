@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pi-app-user
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pi-app-user
+  template:
+    metadata:
+      labels:
+        app: pi-app-user
+    spec:
+      containers:
+      - name: user
+        image: 16181181418/go-gcp-pi-app_user:1.0.0
+        env:
+        - name: USER_CONFIG_FILE_PATH
+          value: "./config/user-service-config.yaml"
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: "/secrets/gcp-sa-key/gcp-postgresql-service-account-key.json"
+        - name: GOOGLE_PROJECT_ID
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: google-project-id
+        - name: GOOGLE_REGION
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: google-region
+        - name: GOOGLE_CLOUD_POSTGRESQL_DB_INSTANCE_NAME
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: google-cloud-postgresql-db-instance-name
+        - name: GOOGLE_CLOUD_POSTGRESQL_DB_NAME
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: google-cloud-postgresql-db-name
+        - name: GOOGLE_CLOUD_POSTGRESQL_DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: google-cloud-postgresql-db-user
+        - name: GOOGLE_CLOUD_POSTGRESQL_DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: google-cloud-postgresql-db-password
+        volumeMounts:
+        - name: gcp-sa-key
+          mountPath: "/secrets/gcp-sa-key"
+          readOnly: true
+      volumes:
+      - name: gcp-sa-key
+        secret:
+          secretName: gcp-sa-key
