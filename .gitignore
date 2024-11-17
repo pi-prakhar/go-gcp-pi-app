@@ -1,4 +1,5 @@
 env/.env.local
 env/.env.local.docker
 env/.env.debug
-secrets
+/secrets/
+/deployments/kubernetes/secrets
