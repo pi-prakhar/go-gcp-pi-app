@@ -3,7 +3,7 @@ version: "3.8"
 services:
   server:
     container_name: pi-app-server
-    image: 16181181418/go-gcp-pi-app_server:1.0.0
+    image: 16181181418/go-gcp-pi-app_server:latest
     deploy:
       replicas: 1
     volumes:
@@ -12,7 +12,7 @@ services:
 
   auth:
     container_name: pi-app-auth
-    image: 16181181418/go-gcp-pi-app_auth:1.0.0
+    image: 16181181418/go-gcp-pi-app_auth:latest
     deploy:
       replicas: 1
     secrets:
@@ -29,7 +29,7 @@ services:
 
   user:
     container_name: pi-app-user
-    image: 16181181418/go-gcp-pi-app_user:1.0.0
+    image: 16181181418/go-gcp-pi-app_user:latest
     secrets:
       - gcp-postgresql-service-account-key.json
       - google_project_id

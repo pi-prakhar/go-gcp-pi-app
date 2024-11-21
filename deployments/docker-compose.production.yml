@@ -1,7 +1,7 @@
 services:
   server:
     container_name: pi-app-server
-    image: 16181181418/go-gcp-pi-app_server:1.0.0
+    image: 16181181418/go-gcp-pi-app_server:latest
     build:
       context: ../
       dockerfile: ./deployments/docker/server.Dockerfile
@@ -16,7 +16,9 @@ services:
 
   auth:
     container_name: pi-app-auth
-    image: 16181181418/go-gcp-pi-app_auth:1.0.0
+    image: 16181181418/go-gcp-pi-app_auth:latest
+    ports:
+      - "8081:8081"
     secrets:
       - google_oauth_client_id
       - google_oauth_client_secret
@@ -33,7 +35,9 @@ services:
 
   user:
     container_name: pi-app-user
-    image: 16181181418/go-gcp-pi-app_user:1.0.0
+    image: 16181181418/go-gcp-pi-app_user:latest
+    ports:
+      - "8082:8081"
     secrets:
       - gcp-postgresql-service-account-key.json
       - google_project_id

@@ -3,7 +3,7 @@ COMPOSE_FILE_PRODUCTION=./deployments/docker-compose.production.yml
 DOCKER_FILE_PATH=./deployments/docker
 PROJECT_NAME=go-gcp-pi-app
 SERVICES := auth server user
-TAGS := 1.0.0
+TAGS := latest
 BUILD_CONTEXT ?= .
 DOCKER_ACCOUNT=16181181418
 
@@ -79,6 +79,7 @@ build-images:
 	@for service in $(SERVICES); do \
 		for tag in $(TAGS); do \
 			docker build \
+				--no-cache \
 				-t $(DOCKER_ACCOUNT)/${PROJECT_NAME}_$$service:$$tag \
 				-f $(DOCKER_FILE_PATH)/$$service.Dockerfile \
 				$(BUILD_CONTEXT); \
