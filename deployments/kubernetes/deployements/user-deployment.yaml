@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: user
-        image: 16181181418/go-gcp-pi-app_user:1.0.0
+        image: 16181181418/go-gcp-pi-app_user:latest
         env:
         - name: USER_CONFIG_FILE_PATH
           value: "./config/user-service-config.yaml"

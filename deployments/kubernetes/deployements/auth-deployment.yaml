@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: auth
-        image: 16181181418/go-gcp-pi-app_auth:1.0.0
+        image: 16181181418/go-gcp-pi-app_auth:latest
         env:
         - name: AUTH_CONFIG_FILE_PATH
           value: "./config/auth-service-config.yaml"
