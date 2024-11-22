@@ -15,6 +15,13 @@ spec:
       containers:
       - name: user
         image: 16181181418/go-gcp-pi-app_user:latest
+        resources:
+          requests:
+            cpu: "500m"
+            memory: "512Mi"
+          limits:
+            cpu: "1000m" 
+            memory: "1Gi"
         env:
         - name: USER_CONFIG_FILE_PATH
           value: "./config/user-service-config.yaml"

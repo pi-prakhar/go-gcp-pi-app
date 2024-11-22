@@ -15,6 +15,13 @@ spec:
       containers:
       - name: server
         image: 16181181418/go-gcp-pi-app_server:latest
+        resources:
+          requests:
+            cpu: "500m"     # 0.5 CPU core
+            memory: "512Mi" # 512MB memory
+          limits:
+            cpu: "1000m"    # 1 CPU core
+            memory: "1Gi"   # 1GB memory
         ports:
         - containerPort: 80
         volumeMounts:
